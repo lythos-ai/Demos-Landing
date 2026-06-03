@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Lythos AI</title>
+<title>Lythos — Infraestructura de IA para empresas modernas</title>
 <meta name="description" content="Diseñamos e implementamos sistemas de IA para clínicas, consultorios y servicios profesionales. Atención 24/7, agenda inteligente y operación automatizada." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2056,7 +2056,7 @@
 
   // ───── Contact modal ─────
   const EMAILJS_SERVICE_ID  = 'contact.lythos';
-  const EMAILJS_TEMPLATE_ID = 'template_hvd9pdg';
+  const EMAILJS_TEMPLATE_ID = 'template.lythos';
   const EMAILJS_PUBLIC_KEY  = 'Ukrd5wawMNGVrwv2O';
 
   if (window.emailjs) {
@@ -2118,7 +2118,6 @@
     const payload = {
       from_name: name,
       from_email: email,
-      whatsapp: form.phone.value.trim() || '�',
       phone: form.phone.value.trim() || '—',
       message: form.message.value.trim() || '—',
       to_email: 'contact.lythos@gmail.com',
