@@ -149,7 +149,11 @@
     letter-spacing: 0.14em;
     color: var(--white);
   }
-  .logo img { filter: brightness(1.05); }
+  .logo-mark {
+    width: 26px; height: 26px; flex-shrink: 0;
+    color: var(--blue-soft);
+    display: block;
+  }
   .nav-links {
     display: flex; gap: 32px;
     font-size: 14px; font-weight: 500;
@@ -637,6 +641,10 @@
     margin-bottom: 18px;
   }
   .outcome .ico svg { width: 18px; height: 18px; stroke: var(--blue-soft); }
+
+  /* Desktop: outcome-inner is transparent, expand-icon hidden */
+  .outcome .outcome-inner { display: contents; }
+  .outcome .expand-icon { display: none; }
 
   /* ── "Así funciona" conversation showcase ── */
   .convo-showcase {
@@ -1331,29 +1339,504 @@
     .convo-annot { order: 2; }
     .wa-phone { order: 1; }
   }
-  @media (max-width: 760px) {
-    .nav-links, .nav-right .sign { display: none; }
+  /* ══════════════════════════════════════════════════════════════════
+     MOBILE — Premium minimal redesign (≤768px)
+     Clean, focused, lots of whitespace. One message per section.
+     ══════════════════════════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* ── GLOBAL ─────────────────────────────────────────────────── */
+    body { font-size: 15px; }
+    .container { padding: 0 24px; }
+
+    /* ── NAVBAR — logo + hamburger only ─────────────────────────── */
+    .nav-links,
+    .nav-right .sign,
+    .nav-right .btn-primary { display: none; }
     .hamburger { display: flex; }
-    .hero { padding: 130px 0 0; }
-    .hero-preview-wrap { margin-top: 70px; padding: 0 12px; }
-    .preview-body { grid-template-columns: 1fr; min-height: 0; }
-    .dash-side { display: none; }
-    .dash-main { padding: 22px 18px; }
-    .greet-block .greet { font-size: 26px; }
-    .kpis { grid-template-columns: repeat(2, 1fr); }
-    .kpi-val { font-size: 32px; }
-    .logo-row { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .outcomes, .testimonials, .why-grid { grid-template-columns: 1fr; }
-    .convo-showcase { gap: 48px; }
-    .wa-phone { max-width: 340px; }
-    .wa-screen { height: 580px; }
-    .annot-item { padding-left: 50px; }
-    .annot-item::before { width: 32px; height: 32px; }
-    section.s { padding: 80px 0; }
-    .container { padding: 0 22px; }
-    .cta-box { padding: 48px 24px; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+
+    /* ── HERO — one headline, one CTA, no dashboard ────────────── */
+    .hero {
+      padding: 110px 0 60px;
+      min-height: auto;
+    }
+    .hero .eyebrow { font-size: 11px; margin-bottom: 20px; }
+    .hero h1 {
+      font-size: 2.2rem;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      max-width: 100%;
+    }
+    .hero .lead {
+      font-size: 15px;
+      margin-top: 20px;
+      max-width: 100%;
+      line-height: 1.65;
+    }
+    /* Stack CTAs, keep only primary */
+    .hero-ctas {
+      flex-direction: column;
+      align-items: stretch;
+      margin-top: 32px;
+      gap: 12px;
+    }
+    .hero-ctas .btn { justify-content: center; width: 100%; }
+    .hero-ctas .btn-ghost { display: none; }
+    .hero-ctas .micro { margin-left: 0; text-align: center; }
+
+    /* Hide the entire dashboard preview on mobile */
+    .hero-preview-wrap { display: none; }
+
+    /* ── SECTIONS — generous breathing room ─────────────────────── */
+    section.s { padding: 60px 0; }
+    .s-head {
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .s-head h2 {
+      font-size: 1.75rem;
+      letter-spacing: -0.025em;
+      line-height: 1.12;
+    }
+    .s-head p {
+      font-size: 15px;
+      line-height: 1.65;
+      margin-top: 14px;
+    }
+    .s-tag { margin-bottom: 12px; }
+
+    /* ── PRODUCT OUTCOMES — interactive accordion on mobile ──────── */
+    .outcomes {
+      grid-template-columns: 1fr !important;
+      gap: 12px;
+    }
+    .outcome {
+      padding: 18px 20px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .outcome .outcome-tag { display: none; }
+    .outcome .outcome-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .outcome .ico {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+    .outcome h3 {
+      font-size: 15px;
+      line-height: 1.3;
+      margin-bottom: 0;
+      flex: 1;
+    }
+    .outcome .expand-icon {
+      display: flex;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: rgba(79,142,247,0.1);
+      transition: transform 300ms ease, background 300ms ease;
+    }
+    .outcome .expand-icon svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--blue-soft);
+      transition: transform 300ms ease;
+    }
+    .outcome.expanded .expand-icon {
+      background: rgba(79,142,247,0.2);
+    }
+    .outcome.expanded .expand-icon svg {
+      transform: rotate(180deg);
+    }
+    .outcome p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--mute);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0;
+      padding-left: 50px;
+      transition: max-height 350ms ease, opacity 300ms ease, margin 300ms ease;
+    }
+    .outcome.expanded p {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 14px;
+    }
+    .outcome-desktop-only { display: none; }
+
+    /* ── CAPACIDADES — compact accordion, all 4 visible ────────── */
+    .outcomes.outcomes-4 {
+      grid-template-columns: 1fr !important;
+      gap: 8px;
+    }
+    .outcomes.outcomes-4 .outcome {
+      padding: 14px 18px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .outcomes.outcomes-4 .outcome .outcome-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .outcomes.outcomes-4 .outcome .ico { margin-bottom: 0; flex-shrink: 0; }
+    .outcomes.outcomes-4 .outcome h3 {
+      font-size: 14px;
+      line-height: 1.3;
+      margin-bottom: 0;
+      flex: 1;
+    }
+    .outcomes.outcomes-4 .outcome p {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--mute);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0;
+      padding-left: 48px;
+      transition: max-height 350ms ease, opacity 300ms ease, margin 300ms ease;
+    }
+    .outcomes.outcomes-4 .outcome.expanded p {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+    /* Hide section description on mobile */
+    #casos .s-head p { display: none; }
+
+    /* ── METHODOLOGY — titles only, hide descriptions + flow card ─ */
+    .methodology {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .method-step p { display: none; }
+    .method-step {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .method-step:last-child { border-bottom: none; }
+    .method-step h3 { font-size: 15px; }
+    .method-num { font-size: 13px; }
+    /* Hide the flow card illustration */
+    .flow-card { display: none; }
+
+    /* ── WHATSAPP / DEMO — hide entirely (decorative) ───────────── */
+    .convo-showcase { display: none; }
+
+    /* ── WHY LYTHOS — keep all 3 (within limit), single column ──── */
+    .why-grid {
+      grid-template-columns: 1fr !important;
+      gap: 24px;
+    }
+    .why-item { padding: 20px; }
+    .why-item h3 { font-size: 16px; }
+    .why-item p { font-size: 14px; line-height: 1.6; }
+
+    /* ── LOGOS row ───────────────────────────────────────────────── */
+    .logo-row {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 20px;
+    }
+
+    /* ── CTA BOX — focused, single button ───────────────────────── */
+    .cta { padding: 60px 0; }
+    .cta-box {
+      padding: 48px 24px;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .cta-box h2 {
+      font-size: 1.6rem;
+      line-height: 1.12;
+    }
+    .cta-box p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+    .cta-buttons { margin-top: 28px; }
+    .cta-buttons .btn { width: 100%; justify-content: center; }
+    .cta-micro { font-size: 12px; margin-top: 14px; }
+
+    /* ── FOOTER — logo + tagline + CTA only, hide link columns ──── */
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .footer-col { display: none; }
+    .footer-brand {
+      text-align: center;
+      padding-bottom: 24px;
+    }
+    .footer-brand .logo { justify-content: center; }
+    .footer-brand p {
+      font-size: 14px;
+      margin-top: 10px;
+      max-width: 32ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* Add CTA to footer on mobile via the existing footer-bottom */
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+      padding-top: 20px;
+    }
+    .footer-legal { order: 2; }
+
+    /* ── MODAL — full-width, comfortable padding ────────────────── */
+    .modal-overlay { padding: 16px; }
+    .modal {
+      max-width: 100%;
+      margin: 0;
+      padding: 28px 16px 24px;
+      border-radius: 14px;
+    }
+    .modal h3 { font-size: 22px; padding-right: 40px; }
+    .modal-sub { font-size: 13px; }
+    .modal-form { gap: 14px; }
+    .field-group input,
+    .field-group textarea {
+      padding: 12px 14px;
+      font-size: 16px; /* prevents iOS zoom */
+    }
+    .modal-submit { font-size: 15px; padding: 14px 20px; }
+
+    /* ── LEGAL MODAL ────────────────────────────────────────────── */
+    .modal.modal-legal { padding: 28px 18px 22px; }
+    .modal-legal h3 { font-size: 20px; }
+    .legal-body { max-height: 60vh; }
+  }
+
+  /* ── Small phones: ≤420px — tighten further ──────────────────── */
+  @media (max-width: 420px) {
+    .container { padding: 0 20px; }
+    .hero { padding: 100px 0 48px; }
+    .hero h1 { font-size: 1.9rem; }
+    .hero .lead { font-size: 14px; }
+    .s-head h2 { font-size: 1.55rem; }
+    .cta-box h2 { font-size: 1.45rem; }
+    section.s { padding: 48px 0; }
+    .outcome, .why-item { padding: 18px; }
+    .cta-box { padding: 36px 20px; }
+    .modal { padding: 24px 14px 20px; }
+  }
+
+  /* ── Mobile-only sections (WhatsApp + Dashboard screenshot) ───── */
+  .mobile-wa-section,
+  .mobile-dash-section { display: none; }
+
+  @media (max-width: 768px) {
+    .mobile-wa-section,
+    .mobile-dash-section {
+      display: block;
+      padding: 48px 0;
+    }
+
+    /* Section header for mobile-only blocks */
+    .mob-head {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .mob-head h2 {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+      line-height: 1.12;
+      color: var(--white);
+    }
+    .mob-head h2 .italic {
+      font-style: italic;
+      color: var(--blue-soft);
+    }
+    .mob-head p {
+      font-size: 14px;
+      color: var(--mute);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ── WhatsApp phone mockup ─────────────────────────────────── */
+    .mwa-phone {
+      max-width: 340px;
+      margin: 0 auto;
+      background: #0b141a;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.08);
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);
+    }
+    .mwa-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #e9edef;
+      font-family: var(--sans);
+    }
+    .mwa-status-icons {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .mwa-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px 10px;
+      background: #1f2c34;
+    }
+    .mwa-back {
+      color: #00a884;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .mwa-av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00a884, #25d366);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: white;
+      flex-shrink: 0;
+    }
+    .mwa-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .mwa-name {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #e9edef;
+    }
+    .mwa-online {
+      font-size: 12px;
+      color: #8696a0;
+    }
+    .mwa-body {
+      background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='p' width='20' height='20' patternUnits='userSpaceOnUse'%3E%3Crect width='20' height='20' fill='%23090e14'/%3E%3Ccircle cx='1' cy='1' r='0.6' fill='%230d1418' opacity='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='200' height='200' fill='url(%23p)'/%3E%3C/svg%3E");
+      background-color: #090e14;
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 380px;
+    }
+    .mwa-day {
+      text-align: center;
+      font-size: 11px;
+      color: #8696a0;
+      background: #1d2830;
+      padding: 4px 12px;
+      border-radius: 6px;
+      align-self: center;
+      margin-bottom: 8px;
+    }
+    .mwa-msg {
+      max-width: 82%;
+      padding: 7px 10px 4px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      line-height: 1.45;
+      position: relative;
+      margin-bottom: 2px;
+    }
+    .mwa-msg.patient {
+      align-self: flex-end;
+      background: #005c4b;
+      color: #e9edef;
+      border-top-right-radius: 2px;
+    }
+    .mwa-msg.luna {
+      align-self: flex-start;
+      background: #1d2830;
+      color: #e9edef;
+      border-top-left-radius: 2px;
+    }
+    .mwa-msg .mwa-t {
+      display: block;
+      text-align: right;
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 3px;
+    }
+    .mwa-msg.patient .mwa-t { color: rgba(255,255,255,0.5); }
+    .mwa-msg .mwa-checks { color: #53bdeb; font-size: 11px; margin-left: 2px; }
+    .mwa-msg .mwa-link {
+      color: #53bdeb;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .mwa-input-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px 12px;
+      background: #1f2c34;
+    }
+    .mwa-input-field {
+      flex: 1;
+      background: #2a3942;
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #8696a0;
+    }
+    .mwa-send {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #00a884;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Dashboard phone mockup ────────────────────────────────── */
+    .mob-dash-phone {
+      max-width: 340px;
+    }
+    .dash-phone-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px 10px;
+      background: linear-gradient(135deg, #0c1a2e, #152a4a);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .dash-phone-header .logo-mark {
+      width: 28px;
+      height: 28px;
+    }
+    .dash-phone-body {
+      background: #f0f2f8;
+      max-height: 520px;
+      overflow: hidden;
+    }
+    .dash-phone-body img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
   }
 </style>
 </head>
@@ -1363,7 +1846,7 @@
 <nav class="nav" id="nav">
   <div class="container nav-inner">
     <a href="#" class="logo" aria-label="Lythos">
-      <img src="lythos-mark-blue.png" alt="" width="30" height="30" />
+      <img class="logo-mark" src="data:image/png;base64,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" alt="Lythos" style="border-radius:6px;" />
       <span>LYTHOS</span>
     </a>
     <div class="nav-links">
@@ -1373,10 +1856,6 @@
       <a href="#contacto">Contacto</a>
     </div>
     <div class="nav-right">
-      <a href="#" data-open-modal class="btn btn-primary">
-        Agendar llamada
-        <span class="arrow">→</span>
-      </a>
       <button class="hamburger" id="hamburger" aria-label="Menú"><span></span></button>
     </div>
   </div>
@@ -1385,7 +1864,6 @@
     <a href="#casos">Casos</a>
     <a href="#metodologia">Metodología</a>
     <a href="#contacto">Contacto</a>
-    <a href="#" data-open-modal class="btn btn-primary" style="justify-content: center;">Agendar llamada</a>
   </div>
 </nav>
 
@@ -1534,81 +2012,172 @@
   </div>
 </section>
 
+<!-- ═══════════════ MOBILE-ONLY: WhatsApp Mockup ═══════════════ -->
+<section class="mobile-wa-section">
+  <div class="container">
+    <div class="mob-head">
+      <h2>Así responde Luna, <span class="italic">24/7</span></h2>
+      <p>Tu asistente virtual que nunca duerme</p>
+    </div>
+    <div class="mwa-phone">
+      <div class="mwa-status-bar">
+        <span>20:21</span>
+        <div class="mwa-status-icons">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#e9edef"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.24 4.24 0 0 0-6 0zm-4-4l2 2a7.07 7.07 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <svg width="16" height="14" viewBox="0 0 24 24" fill="#e9edef"><rect x="1" y="6" width="3" height="12" rx="1"/><rect x="6" y="4" width="3" height="14" rx="1"/><rect x="11" y="8" width="3" height="10" rx="1"/><rect x="16" y="2" width="3" height="16" rx="1"/></svg>
+          <svg width="22" height="12" viewBox="0 0 28 14" fill="none"><rect x="0.5" y="0.5" width="23" height="13" rx="3" stroke="#e9edef" stroke-opacity="0.5"/><rect x="2" y="2" width="17" height="10" rx="2" fill="#4cd964"/><rect x="25" y="4" width="2.5" height="6" rx="1" fill="#e9edef" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="mwa-header">
+        <span class="mwa-back">‹</span>
+        <div class="mwa-av">🤖</div>
+        <div class="mwa-info">
+          <div class="mwa-name">Luna · Asistente Virtual</div>
+          <div class="mwa-online">en línea</div>
+        </div>
+      </div>
+      <div class="mwa-body">
+        <div class="mwa-day">Hoy</div>
+        <div class="mwa-msg patient">Hola! Quería saber si tienen turno disponible esta semana<span class="mwa-t">14:02</span></div>
+        <div class="mwa-msg luna">¡Hola! 😊 Sí, tenemos disponibilidad. Podés ver los horarios y reservar acá: <span class="mwa-link">agenda.lythos.ai</span>. ¿Querés que te cuente sobre nuestros servicios?<span class="mwa-t">14:02 <span class="mwa-checks">✓✓</span></span></div>
+        <div class="mwa-msg patient">¿Cuánto sale una limpieza dental?<span class="mwa-t">14:05</span></div>
+        <div class="mwa-msg luna">La limpieza dental incluye eliminación de sarro, pulido y fluorización. Para conocer el precio exacto podés agendar una consulta de evaluación gratuita 😊<span class="mwa-t">14:05 <span class="mwa-checks">✓✓</span></span></div>
+        <div class="mwa-msg patient">Perfecto, quiero sacar un turno<span class="mwa-t">14:07</span></div>
+        <div class="mwa-msg luna">¡Genial! Podés reservar tu turno acá 📅 → <span class="mwa-link">agenda.lythos.ai/turno</span><span class="mwa-t">14:07 <span class="mwa-checks">✓✓</span></span></div>
+      </div>
+      <div class="mwa-input-bar">
+        <div class="mwa-input-field">Mensaje</div>
+        <div class="mwa-send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MOBILE-ONLY: Dashboard Screenshot ═══════════════ -->
+<section class="mobile-dash-section">
+  <div class="container">
+    <div class="mob-head">
+      <h2>Tu panel, <span class="italic">en tiempo real</span></h2>
+      <p>Toda tu operación en un solo lugar</p>
+    </div>
+    <div class="mwa-phone mob-dash-phone">
+      <div class="mwa-status-bar">
+        <span>20:21</span>
+        <div class="mwa-status-icons">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#e9edef"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.24 4.24 0 0 0-6 0zm-4-4l2 2a7.07 7.07 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <svg width="16" height="14" viewBox="0 0 24 24" fill="#e9edef"><rect x="1" y="6" width="3" height="12" rx="1"/><rect x="6" y="4" width="3" height="14" rx="1"/><rect x="11" y="8" width="3" height="10" rx="1"/><rect x="16" y="2" width="3" height="16" rx="1"/></svg>
+          <svg width="22" height="12" viewBox="0 0 28 14" fill="none"><rect x="0.5" y="0.5" width="23" height="13" rx="3" stroke="#e9edef" stroke-opacity="0.5"/><rect x="2" y="2" width="17" height="10" rx="2" fill="#4cd964"/><rect x="25" y="4" width="2.5" height="6" rx="1" fill="#e9edef" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="dash-phone-header">
+        <img class="logo-mark" src="data:image/png;base64,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" alt="Lythos" style="border-radius:6px; width:28px; height:28px;" />
+        <div class="mwa-info">
+          <div class="mwa-name">Lythos · Dashboard</div>
+          <div class="mwa-online">app.lythos.ai</div>
+        </div>
+      </div>
+      <div class="dash-phone-body">
+        <img src="dashboard-mobile.png" alt="Panel Lythos - Dashboard en tiempo real" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════ PRODUCT / OUTCOMES ═══════════════ -->
 <section class="s" id="producto">
   <div class="container">
     <div class="s-head reveal">
       <div class="s-tag"><span class="bar"></span>Producto</div>
       <h2>Menos trabajo manual, <span class="italic">más crecimiento.</span></h2>
-      <p>Cada sistema que implementamos resuelve un problema operativo concreto. Sin software genérico, sin demos eternas.</p>
     </div>
 
     <div class="outcomes reveal-stagger">
-      <div class="outcome">
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
         <div class="outcome-tag">01 · Atención</div>
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 5h16v11H8l-4 3V5z"/><circle cx="9" cy="10.5" r="1" fill="currentColor"/><circle cx="13" cy="10.5" r="1" fill="currentColor"/><circle cx="17" cy="10.5" r="1" fill="currentColor"/>
-          </svg>
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5h16v11H8l-4 3V5z"/><circle cx="9" cy="10.5" r="1" fill="currentColor"/><circle cx="13" cy="10.5" r="1" fill="currentColor"/><circle cx="17" cy="10.5" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Tus clientes nunca quedan sin respuesta.</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Tus clientes nunca quedan sin respuesta.</h3>
         <p>Asistente conversacional en WhatsApp e Instagram que responde, califica y deriva 24/7, con el tono de tu marca.</p>
       </div>
 
-      <div class="outcome">
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
         <div class="outcome-tag">02 · Agenda</div>
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>
-          </svg>
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>
+            </svg>
+          </div>
+          <h3>Los turnos se reservan solos, sin idas y vueltas.</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Los turnos se reservan solos, sin idas y vueltas.</h3>
         <p>Sistema de agendamiento conectado a tu calendario, con recordatorios automáticos y reprogramación inteligente.</p>
       </div>
 
-      <div class="outcome">
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
         <div class="outcome-tag">03 · CRM</div>
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M15 18c0-2 2-3.5 4-3.5s2.5 1 2.5 3.5"/>
-          </svg>
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M15 18c0-2 2-3.5 4-3.5s2.5 1 2.5 3.5"/>
+            </svg>
+          </div>
+          <h3>Toda la información de tus clientes, en un solo lugar.</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Toda la información de tus clientes, en un solo lugar.</h3>
         <p>Historial unificado, segmentación automática y seguimiento de oportunidades sin planillas ni hojas sueltas.</p>
       </div>
 
-      <div class="outcome">
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
         <div class="outcome-tag">04 · Reactivación</div>
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12a9 9 0 1 1-3.4-7"/><path d="M21 4v5h-5"/>
-          </svg>
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-3.4-7"/><path d="M21 4v5h-5"/>
+            </svg>
+          </div>
+          <h3>Recuperás pacientes inactivos sin mover un dedo.</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Recuperás pacientes inactivos sin mover un dedo.</h3>
         <p>Campañas automáticas personalizadas que detectan clientes en pausa y los traen de vuelta a tu agenda.</p>
       </div>
 
-      <div class="outcome">
+      <div class="outcome outcome-desktop-only" onclick="this.classList.toggle('expanded')">
         <div class="outcome-tag">05 · Operación</div>
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="12" cy="19" r="2.5"/><path d="M7 5h10M17 7l-4 10M7 7l4 10"/>
-          </svg>
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="12" cy="19" r="2.5"/><path d="M7 5h10M17 7l-4 10M7 7l4 10"/>
+            </svg>
+          </div>
+          <h3>Conectamos tus sistemas y eliminamos el trabajo manual.</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Conectamos tus sistemas y eliminamos el trabajo manual.</h3>
         <p>Automatizaciones a medida: facturación, integraciones, flujos internos. Lo que hoy hace una persona, lo hace tu IA.</p>
       </div>
 
-      <div class="outcome">
+      <div class="outcome outcome-desktop-only" onclick="this.classList.toggle('expanded')">
         <div class="outcome-tag">06 · Visibilidad</div>
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 15v-4M12 15V8M17 15V11"/>
-          </svg>
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 15v-4M12 15V8M17 15V11"/>
+            </svg>
+          </div>
+          <h3>Ves cómo trabaja tu negocio en tiempo real.</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Ves cómo trabaja tu negocio en tiempo real.</h3>
         <p>Panel claro con métricas que importan: respuestas, conversiones, agenda y reportes que podés usar para decidir.</p>
       </div>
+
     </div>
   </div>
 </section>
@@ -1623,43 +2192,55 @@
     </div>
 
     <div class="outcomes outcomes-4 reveal-stagger">
-      <div class="outcome">
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>
-          </svg>
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>
+            </svg>
+          </div>
+          <h3>Agendamiento 24/7</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Agendamiento 24/7</h3>
         <p>Los pacientes reservan turnos solos, a cualquier hora. La IA consulta tu agenda en vivo y confirma sin intervención humana.</p>
       </div>
 
-      <div class="outcome">
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10 21a2 2 0 0 0 4 0"/>
-          </svg>
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10 21a2 2 0 0 0 4 0"/>
+            </svg>
+          </div>
+          <h3>Recordatorios automáticos</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Recordatorios automáticos</h3>
         <p>Reducí los no presentados con avisos por WhatsApp el día anterior. Confirma, reprograma o cancela en un click.</p>
       </div>
 
-      <div class="outcome">
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12a9 9 0 1 1-3.4-7"/><path d="M21 4v5h-5"/>
-          </svg>
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 1 1-3.4-7"/><path d="M21 4v5h-5"/>
+            </svg>
+          </div>
+          <h3>Reactivación de pacientes</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Reactivación de pacientes</h3>
         <p>Recuperá pacientes que no vienen hace meses con mensajes personalizados que la IA envía sola, sin que muevas un dedo.</p>
       </div>
 
-      <div class="outcome">
-        <div class="ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 5h16v11H8l-4 3V5z"/><circle cx="9" cy="10.5" r="1" fill="currentColor"/><circle cx="13" cy="10.5" r="1" fill="currentColor"/><circle cx="17" cy="10.5" r="1" fill="currentColor"/>
-          </svg>
+      <div class="outcome" onclick="this.classList.toggle('expanded')">
+        <div class="outcome-inner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5h16v11H8l-4 3V5z"/><circle cx="9" cy="10.5" r="1" fill="currentColor"/><circle cx="13" cy="10.5" r="1" fill="currentColor"/><circle cx="17" cy="10.5" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Conversaciones en tiempo real</h3>
+          <div class="expand-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polyline points="6,9 12,15 18,9"/></svg></div>
         </div>
-        <h3>Conversaciones en tiempo real</h3>
         <p>El odontólogo ve y responde chats desde el dashboard. Tomá el control cuando quieras, dejá que la IA siga cuando no.</p>
       </div>
     </div>
@@ -1865,7 +2446,7 @@
           <span class="arrow">→</span>
         </a>
       </div>
-      <div class="cta-micro">Sin costo · Sin compromiso · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="02616d6c766361762c6e7b766a6d7142656f636b6e2c616d6f">[email&#160;protected]</a></div>
+      <div class="cta-micro">Sin costo · Sin compromiso · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dab9b5b4aebbb9aef4b6a3aeb2b5a99abdb7bbb3b6f4b9b5b7">[email&#160;protected]</a></div>
     </div>
   </div>
 </section>
@@ -1876,7 +2457,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="#" class="logo">
-          <img src="lythos-mark-blue.png" alt="" width="28" height="28" />
+          <img class="logo-mark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAQAElEQVR4AexdC7AkVXn+vp77mHv3wQoGSxRYhX3wsBAUFUFX2LeL+EhhUEwpPqJW+Yq6opZlSmOkWEzFIlhGjYIafETLCLgsrDyUGI2UVBKNsO4CKqJlEHFZ9u7e10zn+09Pz3TP9Mx0z+vOXKbpv885/+v8rz7dfeYC3viaTX5+zWbfWoO8xtaOr94ofEDLi54XvhpCPuPNCom6NEdTPcZTAtMR5Q/Hro3yqB/FRWWS+sZrkETLhNO8LkZqTZ9BM3njCSHKW42zcZTeWn+T70GH7xdBtfB9u8Ja0mE0NpyBuqXTRgYhRwndVuN0hfM30hTyqC0Koqy+xqTTFEW7ftle8ThEg4vpMWjAkopklhhYPE0gjU7jCcFkQkjChbQsLeksKon48KqNs4mMam09cDIKpNGNtxUw2WpIrUdzG2/UFRsbhDpjNhq/wGjG0yuw+QxsvrC1fiegVX3Vcm4F6IRBQx2DGQGPTLqPBtOZodXZIzBcAbLHbFFJeNXPhEXl3dCZphHQCkDYU4C0lk0FhgyLIwKhFx5B9Q3U1DlJgmQdamfR5OKap7PR6bw2twKEaus9DgxvEPJ1uiXpCoykU02yPCaDviN06OJ5clu6SOqa7SQZsy2UJhl2Yy2ZDR8TzjAgk+dppsIDbYvE9n6CtplAMzqZzhCS5UA202l0ktY0BTLgI4M2SaBYLGqbwHeQRDccGciT8dZoIURvCuuTjPlE0rGSdHg30IWkrojhoINkDU7ompNkGUeyLEOyjE/b8TqT9vh0ZHNDLGBxqeSR8YWQzBHHGq9hwtb6rUAoX92m0RWVifZD2RBnYzKIFcmGBWm8IZg8yXLiQ3wrrXYCg7uhFeEkGTPOIIlWjTM+g2p8OO5GcYa6G7Uky2Sy0jek2Wtg/WowvEESvhqnbMP8C/mr2xr+KoTxR8HINrY2C3hk4CAZtFmE0/Kao/V4yaDyzXgD2983fgMLUj25buHJeBzMpnpzkXHeenxJ+Eb+OZp0k+n1N7Izaf4Q17l9gAbGNnIjNNycJglVJEJ+w2EBjtCmRlMbj0EjnpBGhh6FmMZtyN0L/73QlHrOkKE54rR+CBrGTv3YEhu3MAhtcK30RWZuQVt2ETJYjbJLNpZw/jRmqaX65r1BLakdTLWsKwCy8USk6AbV0pFxu9WqGZy2NMEiCZKOP7yQpTHNpVI/JKZs08wdqiJZY0NI60xbtE+zpqrI9uzQiks3CRm0bhC5lBOrO9KeyfWCZNIkXVDIoI2oaanr5pYuKXXyJF1rF3tXsNaADO9cS74wGuva1bNeHDo7qYtAZ1VWaStFrAobGYYht80Tku4ZbYWAhKNTQSGpnAdg01AX0q5weIRHCVee1+1pdDZoJN2cJMNZy2153jJm8DpNCyB0Ms3mSTvuk7qLTYFaawzCkJsNBoaz1lJMhlTDlsCem0Y0KKHSNmSCPgm7+bT6Wath351ml0GrhmkfoGkN6Ib33V1gk5DJgTJaCGaQQTiOtqTkI0BqLAbjdz0FW8PyaTiSsflpVOMTuL7GvgDQc9O1wch1U15s/pSsLbORjPmRRRHJLOypecvZbxQyUnengm1amwWqGd10OFdMn4EhmoDpDMFYrW+tQZhy6yu6akx7I2/EskCn2W1g04et9dNAPX7S/E2jIZlHW8GFMoVMVlZv8rJgho7pMghFov0kXDW9ehxabG2Q9lhJhCoHriXNo+ZmV8ejuUScw60ATonuRtfG6Qs+IlMEosTj3gFR4nd/8FzqOy+ifYfov4v8ILtjZ5KzJOEKAE2O4M5qwtRhshVjCI1VK2BlA8OOcK4awnFjDX1DLd2EpOxPaRRJkEzJXWEjAxm3D0AGgwo53mtMjfP2euRS7Ow3Kw0ME4KNS2BfCLB+ry3MPp8Vflop4zVIyx/lM7nybwHkYAQn6oD1ndXKd5BfNzJ0CURwv7lp6FYEtYvsJAOfSYJkau8s+cbsHgE2MDDEoEKS63RPuCQKdBjeQN0+PHuVD1cA5j/ZH8HwYXbILNvTNzDjGoIvqt789fyEr1YjO33p8d1d72sYBQ0X0WmFQlrMAOtndc29A5hQK8Im1zmQE3pz9+yulUO+Eujy1+IE0qaINBL2RTRQM+BnO7nTrQaQLlzoxOHbXduSPiWDRT2xtS+hO5l+Qf3KHZ3dNumThuxygynRahG4l8BWhZNDZX9smUxJj7XkpecectaPQDOKWwGaMWWhU89ibRxnERnyLmAEOl4AC+jLwE1Ndu7R26rzA1wAYfDCttUQLJxcZx+9rfnhCoDstyCmscfeE8QX7AC15v0ASZm3elt3FpPy2/Xav7gCMDVk55SavvbAuZtCRYmvg0VANo8D2ZwnhfGZWMjSnGp9528m8brMfbQPUNfGxgTbLDBwn3ylIDWWaEDV66vv60ZL1kOyLq2B0s6QZJcpoi4yQ9fOnOUVoBV1pJnTimQnZXwpM1DjisDa+kDSJZFkmcmkfebwkb9+LQ7u2Y2pu3fi0D27cODu3TjthGOAhL0NsiKPLh9kMJddi2ZsCj/TmtRWAThb0s7UR3z28uVANhUxgiklfUYJv/Qtr8aIoux5I/C8HMZywI9vvAaHRbvuny8D4MHk1HEnSdd280JW5rC5K6PGs6alpt4IIhOm1rJEJuATZzc+g0Riz5AWRJvMinfMn8PsL3a6pKOBaSSx+ZwzMHXPjYBWCtNhgB4c9ufv0blYspMsdUo2kPFxCd20Sb0CRI2Iaq2Hj/L0W9/XS5RXnMVje2+XaekDpxcmTOnxAMlLsCdntXUW7xAQqVrDoYUjdQG0oLtKxO45gyp0j4ZkKZT6wckSeHifJT/75DnPwx9+ulOPiOBxQAZ6yaDNrrEdifbj2cMCaMfR9mXDO8RXomb23SSFtQmb0e9QuaeeDe/4dcg99RysWHW2+GrPZfkRzM/Ngwx0kIy9G9RK9C/mcVEAJINk0cMH33phYjauvOabWHHSFowuWYKx/LjaSRym+qs2JvL/5ic3KOkVEsnKYIB6j4sCCPLh6x2e+Jt3XhIMI9dZraTbP/4ZPRmKESxUNIDnEeMnnofq40kr8pibmVURSLiaOEBjj6Qc5QCZnN1Ut/zr2T+1ZxfkLKqP5Ws2CV0/BsyNolDU8yEmGCz7ZH25GHufDjyzywXIOosYvOI0klL1Z6euh69/GrvuS7ZWmn6xvAL0Swwb+1FLdfsAtejFhsnhwN7bapya94EDMwTJGlqIIAkip0THHw/292ZFFQB0DGryZboei7qSclKg7iI8iXxuBjm6xS7m36Se7fRq8VEmSy5J5HIjiB+E7RZiwA+PZAYXsvBmUNtVVh/77669+/c+8H9QBpvPzBxuvvaKGr7D8wWM6muhhjBgiI48Akj2rdteaZmuNvDkda9S/hvf/U5mfgYveNYprhu9PEXvDtHxoPZdBGyZM2juhJ/IEsqS/VcID/3vzTU2P/jHAxgZq17Sa9hgL/5Te3fXEMzfKX+sBr+QCLK12LsCMMPJ9ArIZF4LjOnqF/D0q96k/bxXZdBxp2+rwtQOiRxm9t2MnHQgdviYXHmOXgxjyAUftBp7VwBk8E2b1otWJ0urv1N8xzwhD6/qJW9et7U3Uv/up/YLikXisbu/A7K20B946BEUxyadiWQt3REG6OIKYFASmjWu9/zgWzUiZ264GCOj9ZZvJVTnzN5dGMnlamTnCkWsOudVYFVR1TAuAKLVKV0BkPK6VQ19KufDw6jzDrHjf/Y8GBtXBkROPxEf2nOj7vxaQXv7WbJ6s2jQ4avNtmpKqC9P5+niWwEIbd7WBNwXZmRiQtfoqURq+JaLNmNKPxGTLiTCVE7bBh59+np4ueBGIYO2wjG4vVpvB9eXiOU+Prfj0sg46H7qS9+C514KrRQAkvCYc38S9smPvBtJhy/WidVbMTKaAyJ5Xyw3zYAUQCTySHN4+IsL1tcwvuN9OxyOlD6feMm6M3Boz064mnCU+GVW2c+v0g9FnqogTlo0owEpgCwJUHJ1q7L03wz0/QLe/ZErwWNfhJFly0Xx4M1P49AvbsK/fuYyJdL41VSdX/nO7Vi+egu0QICM8yyWu99cHpACMFObA0klC3qD93DdLT/C2Mp1yB13Hj517Q0YnxgHC9OYUuKn7v2+ln7WVTh+7PNxybtVHNJXl2mRELxF4kfEDWK+MIeL3vZR+PodP6/EH3vUBA7t2YWZ++9AI4dniz5yTzsPyC91hQQWI3oXZ7dRPAbKY1uW7e/0ioUCfCXyjNVPwfR9t+CQtnLv/dH1qN4QqnbuqLXnYtmaTRjVHoHHToSl/gpTPXc743ZlO+Fpuza0JO8SPjuHgv0qp+/3O75xFebuu1Xbt9918MMbrtZmbnPVN/3gLoycsBGHMA4vp3DorvcFSZJkyqRqNxF6yUzS0W8487jDNqUMUuZZpVcJmDs8j+LMHL77lX/A/C9vd0l/bN/38NzT1mTSeO/vHsaENnZedskH4KuIqMcGSu+apOZK0GZFl4AuoSTjEq+QGoYlZdbvYyhZ22kLFYxOqqSH2elZXPH+v0Lhgdsw+6vb8cJnn5p5BkvgtdfdivzqTXjGua/GzOws5qcPY/pXt+lTsCB9bSRNd7xJk4RO6Wp0shGxpzQVgJnd0zlTT1YEoa84/P6/rkfx17fj7a/789SyIaMlfUYuTqw8C5NrN+ONl+6AS5B+FDp8v1aQ3/w7RvTJOMc8AgJgMsh66I4nZa/LrbtIg7XCIWjZ8BUUmQ7SdGYSSWBmBy1CeCjabdrmyzm9y+H6z34cM/fuxoqJsVB5itZXAoFrv30L8ieci4m1W7Fi7RYgfwQgvaNzB/UpuBuH992KcZW/mfqG9/ydaJKbOYxH79nt4E9378YjAmsdCL+/BH8qtTY22iM/uxm3fu2TePJSaEWZQUE/GtFC65t2X9NaK1CRQIfM0LUfTt+s7LwhLd1BoRnaeaHe4mf33YQt654VYuu2Rb+IPxyYxjGnbUJeb/ETussn1m7CG96/A8WRUeQ8qiB8ySvBIA7c9x81Tl97/fdh/0eU+3+y0xWFFcZEDpgUWOtAxZIvwUSptbHRJseIs08/Cb+8axfm9TiZ2XsjLtx0JuB58JkDVQg+bX6ZobOt+EjezqgOkoZqAVgTC3TiaNUcm5vTBzGtTzdSUTZEAhQK8/jit3ZjfM1mTKzZimPPvACPTAeJtpUDcwWcd/pqHN5zMw7qd/2ivhZgNVAsJmgzAjB36DCOOWpZAj07il4OX/rHj+LwPTvx1COC1Uv517Ml0EUSJINBB67RYsiqrn6Us2pqm18B0d774V/dUVfTvBK45IQXYMnJL8abP/AJKOWgi6yJ6A4rELP7dmP6/ltx41evQq4UZI7koJsQJx6zwhhj8Ps/HQI0tdeg4NDiQRL3/fjb+O1d/wbPG5WWoNjUcSdJkHT9rJf2+Qn7p28KwOcIpvbcJL8oiJ9FvbAtPXEdluh5XhipHUo+owAAChlJREFU/jm3wnvScU+oDEq9OX2aMRfofO/bXl/CVpo3vetDgJJw5LJuhYI4cmkeB35+g+YZQdJBBvYl0bqJK8JHt7zOZLcP4soPvxk5LZ3Vgo8emsO4vtfnc9rLbxCnot4b/vv2r1eL48Qztrh3AF+UM09/hq7R08d//uSnDvFYYVQvjJsxedI2rTDbMKlVZsLBNkycHMDkyec7/BKNl4jPxktOOR9LT9mGJ550Lh7ar9XEaau9jOhd5Nc//Ko89Zw91Rwkq1FdHvuyhWhaAD7Kjy7VS6UvdIMzvTOmnzLjTRedj+rj7l8+iCc+cxtyudBM467mCsaFmXk5FPQrVx8P690gHO/f/2jYLbdPOMKe+5RvAj2CisU5vcXPoaj3DN/BnD5FAygWZh2+oE2jefHZuDA/i/n5ORwsjuK4574c46s2YOf37yzrj3aedOQROHppLoqK9cn0cYsJtjxIsQKYSQb1Q189u3EbLmytXx9IBX5mSs/IMMkBr57oeOaGS/QcD8Z2JZN1+kr9z+/4irHEYK5Ivd0b1VOJ+fjsl78Zo0Nyn7zsg6rqZL1ocCRLaC7Pwyve9CGMH3umiqpWwa/v2ilk3Fch3NnOy5xTkPmSogBCneawgRvXSYSjObd9dQ3UpDjf8YZX1nB94LJ/ghf5Sw2SiUsnlMRCwcfalU9G9bFk5dnQN5gDX3xfu/426Sgiemx94ZmovEhGKa33ZSowcSSeePJ5iUpOfdrRiXiyHOFEejeQyaXYYCZnopbKBiyZSds2r6uRuepzXy3jSDdreRzvEA/8+BtxlEZF20Icn1SvdJrNo3klO66L1FhfFyWujjWm9sCsh8em52t03rnri8JpXl2jp282RhE96GcsgFqj27XRl4KH//iIrvHzaD0vo5jq4JCyhTk9n2f1/a5dviiz+mvOuVDJVidyevpktH8jOIJy3UP7vqs2Yygk0fj0Ye8uTzrtxTVsnmwPc23+hwykfAoHPWo77XVms5UT/O3lV9bI/eJOfTbp451MDoovWlFbrjP33lYjW9Bn428emgKRQ/SwIlq26oVRlPo+LCHXfOJSPS3i/CK2fc7LRui3hmpF/uxBPSyj6a/mSB53GivfCZIp9XbBYCVyz29rP5/sb/o9LeM+9OyPWEfKVqputWw//DMVSYQWdpeceC5gf8iZ8Lu+n1sKfTGGrGopAC56yYvw9U9/WEkJisA3rM1lbRtAfcEsXXUujlp7Ho4+dSOOfsZ6wQaMjOU1F+VdRbkVaGXUm563EJPGXHNJKqIYz4pjObTvFuQxC9q6rQ0dQ/p64bMb6jFtFy/PB9ushg9hala6tGcQjqtbK6f86g3VaI2JC9afhek9O+Hp006LCApz4lYl6FSyUBeKkk7iEVqrCjDnjeGgP4b98znsnx3Fo3MjmMdILPnGuxDgVoCFmDg6J3W3Ll1V+yJoPPv33IZD+27GNX+/He987csxZVu9e3dhlEaNgxXzkadsVWC1QsRJ5ZGv6slpW/aEs15axkU7pIdD930Pc/oVcvq+m/Dtz30Mn/7YO/H5y9+LL+zYLnhfpG/j7bha+M9fvl00g/fh6isEO4xvOz5/RYD7wo734GrpuGbHe3G14MPvep0qysommN1sD3q9vS78ClDyt5ibwO8eqd2oMTJJLdHrcfkH34pgga7NvgUwv2ojrJgMTK4e+CjgwT8exvmvfVc9Foe3ubauew5ef+E2vOZlm3DxSzcKNkT6Ng7gNS8L2otfugGvvkCg9uIyLkIT3ugbzn62m2OhL/VvlV5bprfBpz/vIthqn3VqS/6SVeuVfEtZOmmqhm750T1YcuIL0gl0mMteYE2l2W5g/YUAVwALaUDMaRawdM0W3PnzfTF0o0FRxPyqzSh6I3APXGQ75r1J5FdvwUOPTmUTbJO7X2LuCqBNXzorziLWveLtSspG6H0uWbevJ7lghd6sJ9dsBu3G1x1tzGSpY4NmoFWHAmjO457zCs25Ff9y3S3NpDpCL+grpiOK2lTSNwVAVhKn3AJ6GVt+0mb9QrdJsBETTzsb+ZVnIf/0FyG/dgsmtFJMF3XXu3dzlI/W7yy9kGkFeuP2K9yvj+NrNqkgNmLs+Ocjf/zzBM/HxErB8WdhQpCXLfZ3hhOGE+Q1diD+CW1Bx0Fy4pkQTMoP82XDK99ctjlNp1s8fVMAscTpjoRLrK+9e/W0V+CPLQXGlwOj9unnI7hzuxAWrQim25UjCS+vXwvt7wnV+uPL4MsGB2PLURT4Y8KFMLocNi6OLUFxVPsNIYheFIQ0X3RqWxqRg3QzRjC96Xq9maYTs/hSYqCmp2c4Z9haojzQ/qEMKQEhnJKohUuUUt/GBsJQAIPSfgYiB0kVeqg/QuhB1+vBHItgijA5am11cqB+aZXSGlXxsTrBWlEQA3ttrbBbL7b6GaKHMCyAloNtBVAlbIm2orA2BBvHoEpmgYeuAEgusBmDNn295MsPS3wfJ1wWxs6+2AqOWTSwAyuKEAbHCbcCDI65Q0s7HYFhAXQ6oh3W1211wwLodoT7XP+wAPo8Qd02b1gA3Y5wn+vvm78H6PM4LVrzhp+Biza16Rxzj4CF3IpMZ+aQq1sRcAVANt8JJJvzdMvIod7uRcAVQJoVIA1P98xspnnxFWczjztFXyQvgbYF26mQ9JGeHqy6w5fAPsp3kindLm23ApCtL6Fk67JJDg9xkQj4vv0JSQTR+W7qd4DOTz3U2A8RcAXQjiH2ckgOV4F2YriQsm0XgBlvRWCtATksBovDoEBHCiDqbLQYovhhvz8j0PEC6E83B8eqXls6LIBeR7zP5hsWQJ8lpNfmDAug1xHvs/mGBdBnCemOOfW/zIYF0J2I95lWv649wwKoG5rFRBiuAIspmy34YitAchEMV4AWwtkNkW7p/NDb/hIGsX+BNTLZsAAiwVhs3SDxgVfRfoAJrsMCCOLwuL2mKgCSIONgESMDnPXrAdmcp57sQuHJ/rGZpAsDSZcDN0h5+dhVXy5zRvtlpDpNC4Ck2GpPsoIn2dQ4sjlP7Sz1MSTrE9ugkMF/raPZj1pk5+cnWY4jSedFaIe1Bg6Z4WKJN6gn4v4kjGR54nqMhk9jAEljdfrIoO8QpQtZiyuRyg0Z8JB0esqEUoek65FB6wYJF7Ix3UTIOE8aH02uHh8Z12e8jYCk85FkmY0M+mTQlgmlDskamRIpc+P+JCyzVB0Bko5CBq0bJFxIlh0gg37IRtJ1yaC1AckYv+GSgAz4jEbSmpgcGeCMQNLRrG9A0poaICt4kk6GrN+aAjJOD3HWhkAGPOG4XksGK5LRyVoZshZnvGnBrQAhMxkoIyttSLOWpDVdAZIuuFmVk4EcybIoWemXkaUOyZp5SDoqSUcjK60RyGBs/VaApBMjWdbvECkvnuc5uUbsZEU3Ge+bHBnHkTb24BlxCAsXgV7MTLLOND7+HwAA//9zRCj7AAAABklEQVQDAKtKEIj4pOQ/AAAAAElFTkSuQmCC" alt="Lythos" style="border-radius:6px;" />
           <span>LYTHOS</span>
         </a>
         <p>Infraestructura de IA para empresas modernas. Diseñamos sistemas que trabajan por vos.</p>
@@ -1896,7 +2477,7 @@
       </div>
       <div class="footer-col">
         <h5>Contacto</h5>
-        <a href="/cdn-cgi/l/email-protection#c5a6aaabb1a4a6b1eba9bcb1adaab685a2a8a4aca9eba6aaa8"><span class="__cf_email__" data-cfemail="3754585943565443195b4e435f584477505a565e5b1954585a">[email&#160;protected]</span></a>
+        <a href="/cdn-cgi/l/email-protection#6b0804051f0a081f4507121f0304182b0c060a020745080406"><span class="__cf_email__" data-cfemail="61020e0f150002154f0d1815090e1221060c00080d4f020e0c">[email&#160;protected]</span></a>
         <a href="#">Buenos Aires · Argentina</a>
       </div>
     </div>
@@ -1940,7 +2521,7 @@
         <label for="f-message">Mensaje <span class="opt">(opcional)</span></label>
         <textarea id="f-message" name="message" placeholder="Contanos brevemente sobre tu negocio"></textarea>
       </div>
-      <div class="modal-error" id="modalError">Hubo un problema enviando el formulario. Probá de nuevo o escribinos a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d1e1213091c1e095311040915120e3d1a101c1411531e1210">[email&#160;protected]</a>.</div>
+      <div class="modal-error" id="modalError">Hubo un problema enviando el formulario. Probá de nuevo o escribinos a <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b6864657f6a687f2567727f6364784b6c666a626725686466">[email&#160;protected]</a>.</div>
       <button type="submit" class="modal-submit" id="modalSubmit">
         <span class="submit-text">Enviar consulta</span>
         <span class="arrow">→</span>
@@ -1991,7 +2572,7 @@
         </div>
         <div class="legal-section">
           <h4><span class="num">6</span>Contacto</h4>
-          <p><a href="/cdn-cgi/l/email-protection#23404c4d574240570d4f5a574b4c5063444e424a4f0d404c4e"><span class="__cf_email__" data-cfemail="95f6fafbe1f4f6e1bbf9ece1fdfae6d5f2f8f4fcf9bbf6faf8">[email&#160;protected]</span></a></p>
+          <p><a href="/cdn-cgi/l/email-protection#53303c3d273230277d3f2a273b3c2013343e323a3f7d303c3e"><span class="__cf_email__" data-cfemail="83e0ecedf7e2e0f7adeffaf7ebecf0c3e4eee2eaefade0ecee">[email&#160;protected]</span></a></p>
         </div>
       </div>
     </div>
@@ -2011,7 +2592,7 @@
         </div>
         <div class="legal-section">
           <h4><span class="num">3</span>Almacenamiento</h4>
-          <p>Los datos se almacenan de forma segura y pueden ser eliminados a tu solicitud enviando un email a <a href="/cdn-cgi/l/email-protection#e685898892878592c88a9f928e8995a6818b878f8ac885898b"><span class="__cf_email__" data-cfemail="ceada1a0baafadbae0a2b7baa6a1bd8ea9a3afa7a2e0ada1a3">[email&#160;protected]</span></a>.</p>
+          <p>Los datos se almacenan de forma segura y pueden ser eliminados a tu solicitud enviando un email a <a href="/cdn-cgi/l/email-protection#f3909c9d87929087dd9f8a879b9c80b3949e929a9fdd909c9e"><span class="__cf_email__" data-cfemail="30535f5e445153441e5c4944585f4370575d51595c1e535f5d">[email&#160;protected]</span></a>.</p>
         </div>
         <div class="legal-section">
           <h4><span class="num">4</span>Cookies</h4>
@@ -2023,7 +2604,7 @@
         </div>
         <div class="legal-section">
           <h4><span class="num">6</span>Contacto</h4>
-          <p>Para ejercer tus derechos de acceso, rectificación o eliminación de datos: <a href="/cdn-cgi/l/email-protection#e784888993868493c98b9e938f8894a7808a868e8bc984888a"><span class="__cf_email__" data-cfemail="abc8c4c5dfcac8df85c7d2dfc3c4d8ebccc6cac2c785c8c4c6">[email&#160;protected]</span></a></p>
+          <p>Para ejercer tus derechos de acceso, rectificación o eliminación de datos: <a href="/cdn-cgi/l/email-protection#a6c5c9c8d2c7c5d288cadfd2cec9d5e6c1cbc7cfca88c5c9cb"><span class="__cf_email__" data-cfemail="7e1d11100a1f1d0a5012070a16110d3e19131f1712501d1113">[email&#160;protected]</span></a></p>
         </div>
       </div>
     </div>
